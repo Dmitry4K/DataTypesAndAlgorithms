@@ -1,15 +1,15 @@
 #include<iostream>
 #include"counting_sort.h"
 
-void print_matrix(int* matrix, int size) {
+void print_matrix(unsigned int* matrix, int size) {
 	for (int i = 0; i < size; i++)
 		std::cout << matrix[i]<<' ';
 	std::cout << std::endl;
 	system("pause");
 }
 
-int find_max(int * arr, int size) {
-	int max = -1;
+int find_max(unsigned int * arr, int size) {
+	int max = 0;
 	for (int i = 0; i < size; i++)
 		if (arr[i] > max)
 			max = arr[i];
@@ -17,7 +17,7 @@ int find_max(int * arr, int size) {
 }
 
 int main() {
-	int arr[11] = { 1, 4, 6, 2, 2, 1, 3 ,4 ,5 ,6,7 };
+	unsigned int arr[11] = { 1, 4, 6, 2, 2, 1, 3 ,4 ,5 ,6,7 };
 	int size = 11;
 	counting_sort(arr,size, find_max(arr, size));
 	print_matrix(arr,size);
