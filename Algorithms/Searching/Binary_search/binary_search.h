@@ -1,9 +1,9 @@
 #pragma once
 template<typename T>
-int binary_search(T* arr, T Key) {
+int binary_search(T* arr,int size, T Key) {
 	bool found = false;
 	int left = 0;
-	int right = sizeof(arr) - 1;
+	int right = size - 1;
 	int middle;
 
 	while ((left <= right) && (found != true)) {
