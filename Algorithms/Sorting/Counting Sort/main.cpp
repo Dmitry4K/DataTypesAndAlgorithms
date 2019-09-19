@@ -8,10 +8,19 @@ void print_matrix(int* matrix, int size) {
 	system("pause");
 }
 
+int find_max(int * arr, int size) {
+	int max = -1;
+	for (int i = 0; i < size; i++)
+		if (arr[i] > max)
+			max = arr[i];
+	return max;
+}
+
 int main() {
 	int arr[11] = { 1, 4, 6, 2, 2, 1, 3 ,4 ,5 ,6,7 };
-	counting_sort(arr,11, 7);
-	print_matrix(arr,11);
+	int size = 11;
+	counting_sort(arr,size, find_max(arr, size));
+	print_matrix(arr,size);
 
 	return 0;
 }
