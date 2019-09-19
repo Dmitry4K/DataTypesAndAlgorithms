@@ -9,7 +9,7 @@ void print_matrix(unsigned int* matrix, int size) {
 }
 
 int find_max(unsigned int * arr, int size) {
-	int max = 0;
+	int max = arr[1];
 	for (int i = 0; i < size; i++)
 		if (arr[i] > max)
 			max = arr[i];
