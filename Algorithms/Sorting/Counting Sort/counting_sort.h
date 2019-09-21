@@ -14,4 +14,6 @@ void counting_sort(unsigned int* a, int size, int max_el) {
 	}
 	for (int i = 0; i < size; i++)
 		a[i] = b[i];
+	delete [] c;
+	delete [] b;
 }
