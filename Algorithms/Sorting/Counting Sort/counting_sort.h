@@ -7,7 +7,7 @@ void counting_sort(unsigned int* a, int size, int max_el) {
 		c[a[i]]++;
 	for (int i = 1; i <= max_el; i++)
 		c[i] += c[i - 1];
-	unsigned int* b = new int[size];
+	unsigned int* b = new unsigned int[size];
 	for (int i = size - 1; i >= 0; i--) {
 		c[a[i]]--;
 		b[c[a[i]]] = a[i];
