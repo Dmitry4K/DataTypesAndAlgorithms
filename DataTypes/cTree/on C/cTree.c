@@ -1,6 +1,6 @@
 #include"common_tree.h"
 #include<malloc.h>
-#include<iostream>
+#include<stdio.h>
 cTree* cTreeCreate(int key) {
 	cTree* res = (cTree*)malloc(sizeof(cTree));
 	res->root = (cNode*)malloc(sizeof(cNode));
