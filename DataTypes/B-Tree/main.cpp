@@ -4,10 +4,10 @@
 
 template<typename T, int P> class BTree {
 	template<typename, int> struct BTreeNode {
-		int n;//n РєРѕР»-РІРѕ РєР»СЋС‡РµР№ РІ СѓР·Р»Рµ
-		T* keys;//СѓРїРѕСЂСЏРґРѕС‡РµРЅРЅС‹Рµ n РєР»СЋС‡РµР№
-		BTreeNode<T, P>** nodes;//n+1 СѓРєР°Р·Р°С‚РµР»РµР№ РЅР° СЃР»РµРґ СѓР·Р»С‹
-		bool leaf; //СЏРІР»СЏРµС‚СЃСЏ Р»Рё СѓР·РµР» Р»РёСЃС‚РѕРј 
+		int n;//n кол-во ключей в узле
+		T* keys;//упорядоченные n ключей
+		BTreeNode<T, P>** nodes;//n+1 указателей на след узлы
+		bool leaf; //является ли узел листом 
 		BTreeNode() : n(0), keys(nullptr), nodes(nullptr), leaf(true) {
 			keys = new T[2 * P - 1];
 			nodes = new BTreeNode<T, P> * [2 * P];
@@ -245,6 +245,8 @@ public:
 		return root->BTreeSearch(k);
 	}
 	void BTReeInsert(T k) {
+		if (!root)
+			root = new BTreeNode<T, P>();
 		if (root->n == (2 * P - 1)) {
 			BTreeNode<T, P>* s = new BTreeNode<T, P>();
 			s->leaf = false;
@@ -276,7 +278,7 @@ public:
 	}
 };
 struct KeyValue {
-	char key[256];
+	char key[257];
 	unsigned long long value;
 	friend bool operator>(const KeyValue& left, const KeyValue& right);
 	friend bool operator<(const KeyValue& left, const KeyValue& right);
@@ -306,37 +308,37 @@ bool operator<=(const KeyValue& left, const KeyValue& right) {
 	return (strcmp(left.key, right.key) <= 0 ? true : false);
 }
 int main() {
-	std::cin.tie(NULL);
+	std::cin.tie(nullptr);
 	std::ios_base::sync_with_stdio(false);
 	BTree<KeyValue, 50> btree;
 	KeyValue buffer;
-	char command;
-	while (std::cin >> command) {
-		switch (command) {
-		case '+':
+	
+	while (std::cin >> buffer.key) {
+		if (buffer.key[0] == '+') {
 			std::cin >> buffer.key >> buffer.value;
 			buffer.toLower();
 			if (btree.BTreeSearch(buffer)) {
 				std::cout << "Exist\n";
-				break;
+				continue;
 			}
 			btree.BTReeInsert(buffer);
 			std::cout << "OK\n";
-			break;
-		case'-':
+		}
+		else if (buffer.key[0] == '-') {
 			std::cin >> buffer.key;
 			buffer.toLower();
 			if (!btree.BTreeSearch(buffer)) {
 				std::cout << "NoSuchWord\n";
+				continue;
 			}
 			btree.BTreeDeleteNode(buffer);
 			std::cout << "OK\n";
-			break;
-		case '!':
-			break;
-		default:
-			buffer.key[0] = command;
-			std::cin.getline(buffer.key + 1, 256, '\n');
+		}
+		else if (buffer.key[0] == '!') {
+			return 0;
+			continue;
+		}
+		else {
 			buffer.toLower();
 			KeyValue* result = btree.BTreeSearch(buffer);
 			if (result) {
@@ -345,7 +347,6 @@ int main() {
 			else {
 				std::cout << "NoSuchWord\n";
 			}
-			break;
 		}
 	}
 	return 0;
