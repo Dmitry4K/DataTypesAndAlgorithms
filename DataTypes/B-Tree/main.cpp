@@ -1,16 +1,16 @@
-#include<vld.h>
-//#include<random>
+
+//#include<vld.h>
 #include<iostream>
 #include<fstream>
-#include<ctype.h>
+#include<cctype>
 #include<string.h>
 
 template<typename T, int P> class BTree {
 	template<typename, int> struct BTreeNode {
-		int n;//n кол-во ключей в узле
-		T* keys;//упорядоченные n ключей
-		BTreeNode<T, P>** nodes;//n+1 указателей на след узлы
-		bool leaf; //является ли узел листом 
+		int n;
+		T* keys;
+		BTreeNode<T, P>** nodes;
+		bool leaf;
 		BTreeNode() : n(0), leaf(true) {
 			keys = new T[2 * P - 1];
 			nodes = new BTreeNode<T, P> * [2 * P];
@@ -212,7 +212,8 @@ template<typename T, int P> class BTree {
 			}
 			child->n += sibling->n + 1;
 			--n;
-			delete sibling;
+			if (sibling)
+				delete sibling;
 			sibling = nullptr;
 		}
 		void BTreeDeleteNode(T k) {
@@ -241,13 +242,12 @@ template<typename T, int P> class BTree {
 					nodes[index]->BTreeDeleteNode(k);
 				}
 			}
-			return;
 		}
 		void BTreePrint(std::ostream& out, int c) {
 			for (int i = 0; i < c; ++i)
 				std::cout << '\t';
 			for (int i = 0; i < n; ++i) {
-				out << keys[i]<< ' ' ;
+				out << keys[i] << ' ';
 			}
 			out << std::endl;
 			for (int i = 0; i <= n; ++i) {
@@ -265,14 +265,13 @@ template<typename T, int P> class BTree {
 				}
 			}
 		}
-		
 		void BTreeLoad(std::fstream& in) {
 			in.read((char*)&(this->n), sizeof(int));
 			in.read((char*)&(this->leaf), sizeof(bool));
 			for (int i = 0; i < n; ++i) {
 				in.read((char*)&(this->keys[i]), sizeof(T));
 			}
-			if(!leaf){
+			if (!leaf) {
 				for (int i = 0; i <= n; ++i) {
 					nodes[i] = new BTreeNode<T, P>();
 					nodes[i]->BTreeLoad(in);
@@ -337,7 +336,8 @@ public:
 			else {
 				root = root->nodes[0];
 			}
-			delete tmp;
+			if (tmp)
+				delete tmp;
 		}
 	}
 	void BTreePrint(std::ostream& out) {
@@ -350,8 +350,10 @@ public:
 		}
 	}
 	void BTreeLoad(std::fstream& in) {
-		root->BTreeDestroy();
-		delete root;
+		if (root) {
+			root->BTreeDestroy();
+			delete root;
+		}
 		root = new BTreeNode<T, P>();
 		root->BTreeLoad(in);
 	}
@@ -387,8 +389,8 @@ bool operator<=(const KeyValue& left, const KeyValue& right) {
 	return (strcmp(left.key, right.key) <= 0 ? true : false);
 }
 int main() {
+	std::ios::sync_with_stdio(false);
 	std::cin.tie(nullptr);
-	std::ios_base::sync_with_stdio(false);
 	BTree<KeyValue, 50> btree;
 	KeyValue buffer;
 	while (std::cin >> buffer.key) {
@@ -417,9 +419,12 @@ int main() {
 			if (strcmp(buffer.key, "Load") == 0) {
 				std::cin >> buffer.key;
 				std::fstream file(buffer.key, std::ios::in | std::ios::binary);
-				if (!file.is_open())
-					std::cout << "File is not opened";
+				if (!file.is_open()) {
+					std::cout << "ERROR: File is not opened\n";
+					continue;
+				}
 				btree.BTreeLoad(file);
+				file.close();
 				std::cout << "OK\n";
 			}
 			else if (strcmp(buffer.key, "Save") == 0) {
@@ -427,6 +432,7 @@ int main() {
 				std::fstream file(buffer.key, std::ios::binary | std::ios::out);
 				file.sync_with_stdio(false);
 				btree.BTreeSave(file);
+				file.close();
 				std::cout << "OK\n";
 			}
 		}
@@ -441,6 +447,5 @@ int main() {
 			}
 		}
 	}
-	//*/
 	return 0;
 }
