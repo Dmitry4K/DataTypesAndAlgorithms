@@ -3,16 +3,16 @@
 #include"LongNumber.h"
 
 
+
 int main() {
+	std::cin.tie(NULL);
 	std::ios::sync_with_stdio(false);
-	std::string str;
-	LongNumber A, B, C;
+	std::string str1;
+	std::string str2;
 	char Operator;
-	while (std::getline(std::cin, str)) {
-		A = LongNumber(str);
-		std::getline(std::cin, str);
-		B = LongNumber(str);
-		Operator = std::cin.get();
+	while (std::cin>>str1>>str2>>Operator) {
+		LongNumber A(str1);
+		LongNumber B(str2);
 		switch (Operator) {
 		case '+' :
 			std::cout << Sum(A, B) << std::endl; std::cin.get();
@@ -29,27 +29,29 @@ int main() {
 			std::cout << Mult(A, B) << std::endl; std::cin.get();
 			break;
 		case '^' :
-			C = A;
-			if (std::stoi(str) == 0) {
-				std::cout << 0 << std::endl; std::cin.get();
-				break;
+			if (A == 0 && B == 0) {
+				std::cout << "Error\n"; std::cin.get();
 			}
-			for (int i = 0; i < std::stoi(str)-1; ++i) {
-				C = Mult(C, A);
+			else {
+				 std::cout << SmallExp(A, B) << std::endl; std::cin.get();
 			}
-			std::cout << C << std::endl; std::cin.get();
 			break;
 		case '/':
-			std::cout << Div(A, B) << std::endl; std::cin.get();
+			if (B != 0) {
+				std::cout << Div(A, B) << std::endl; std::cin.get();
+			}
+			else {
+				std::cout << "Error\n"; std::cin.get();
+			}
 			break;
 		case '>':
-			std::cout << (Cmp(A, B) == 1 ? "true\n" : "false\n"); std::cin.get();
+			std::cout << (A > B ? "true\n" : "false\n"); std::cin.get();
 			break;
 		case '<':
-			std::cout << (Cmp(A, B) == -1 ? "true\n" : "false\n"); std::cin.get();
+			std::cout << (A < B ? "true\n" : "false\n"); std::cin.get();
 			break;
 		case '=':
-			std::cout << (Cmp(A, B) == 0 ? "true\n" : "false\n"); std::cin.get();
+			std::cout << (A == B ? "true\n" : "false\n"); std::cin.get();
 			break;
 		}
 	}
