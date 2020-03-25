@@ -7,6 +7,46 @@
 #include"LongNumber.h"
 
 
+const unsigned long long DEFAULT_BASE_FOR_LONG_NUMBER = 1000000;
+
+class LongNumber {
+private:
+	long long Base = DEFAULT_BASE_FOR_LONG_NUMBER;
+	std::vector<long long> Container;
+public:
+	LongNumber();
+	LongNumber(const std::string& str);
+	LongNumber(long long a);
+	void Clear();
+	void Print(std::ostream& out) const;
+	friend int Cmp(const LongNumber& a, const LongNumber& b);
+	friend bool operator>(const LongNumber& a, const LongNumber& b);
+	friend bool operator<(const LongNumber& a, const LongNumber& b);
+	friend bool operator>=(const LongNumber& a, const LongNumber& b);
+	friend bool operator<=(const LongNumber& a, const LongNumber& b);
+	friend bool operator==(const LongNumber& a, const LongNumber& b);
+	friend bool operator!=(const LongNumber& a, const LongNumber& b);
+
+	friend LongNumber Sum(const LongNumber& a, const LongNumber& b);//a > 0 , b > 0
+	friend LongNumber Sub(const LongNumber& a, const LongNumber& b);// a - b > 0
+	friend LongNumber Mult(const LongNumber& a, const LongNumber& b);
+	friend LongNumber Div(const LongNumber& a, const LongNumber& b);
+	friend LongNumber SmallDiv(const LongNumber& a, const int& b);
+	friend LongNumber SmallMult(const LongNumber& a, const int& b);
+	friend std::ostream& operator<< (std::ostream& out, const LongNumber& a);
+	friend LongNumber Exp(const LongNumber& a, const LongNumber&);
+	friend LongNumber SmallExp(const LongNumber& a, const LongNumber& b);
+};
+LongNumber SmallMult(const LongNumber& a, const int& b);
+LongNumber Exp(const LongNumber& a, const LongNumber&);
+LongNumber SmallDiv(const LongNumber& a, const int& b);
+int Cmp(const LongNumber& a, const LongNumber& b);
+LongNumber Sum(const LongNumber& a, const LongNumber& b);
+LongNumber Sub(const LongNumber& a, const LongNumber& b);
+LongNumber Mult(const LongNumber& a, const LongNumber& b);
+LongNumber Div(const LongNumber& a, const LongNumber& b);
+std::ostream& operator<< (std::ostream& out, const LongNumber& a);
+
 std::ostream& operator<< (std::ostream& out, const LongNumber& a) {
 	a.Print(out);
 	return out;
@@ -20,12 +60,15 @@ LongNumber::LongNumber(const std::string& s) {
 			Container.push_back(atoi(s.substr(0, i).c_str()));
 		else
 			Container.push_back(atoi(s.substr(i - k, k).c_str()));
+
+	while (Container.size() > 1 && Container.back() == 0)
+		Container.pop_back();
 }
 void LongNumber::Print(std::ostream& out) const{
 	out << (Container.empty() ? 0 : Container.back());
-//	out.width((int)log10(Base));
+	int k = (int)log10(Base);
 	for (int i = (int)Container.size() - 2; i >= 0; --i)
-		out <<std::setw((int)log10(Base))<<std::setfill('0') <<Container[i];
+		out <<std::setw(k)<<std::setfill('0') <<Container[i];
 }
 LongNumber::LongNumber(long long a) {
 	if (a == 0) {
@@ -67,6 +110,9 @@ bool operator<=(const LongNumber& a, const LongNumber& b) {
 }
 bool operator==(const LongNumber& a, const LongNumber& b) {
 	return Cmp(a, b) == 0 ? true : false;
+}
+bool operator!=(const LongNumber& a, const LongNumber& b) {
+	return Cmp(a, b) != 0 ? true : false;
 }
 
 LongNumber Sum(const LongNumber& a, const LongNumber& b) {
@@ -134,141 +180,32 @@ LongNumber Mult(const LongNumber& a, const LongNumber& b) {
 		C.Container.pop_back();
 	return C;
 }
-
 LongNumber Div(const LongNumber& a, const LongNumber& b) {
-
-	/*
-	int n = b.Container.size();
-	int m = a.Container.size() - b.Container.size();//*/
-	//нормализаци€
-	int d = (int)(a.Base / (b.Container.back() + 1));
-	LongNumber u = SmallMult(a, d);
-	LongNumber v = SmallMult(b, d);
-	//std::cout << "Start u: " << u << " and v: " << v;
-	//std::cout << " d: " << d << std::endl;
-	int n = v.Container.size();
-	int m = u.Container.size() - v.Container.size();
-	
-	LongNumber Q;
-	if (n == 1) {
-		Q = SmallDiv(a, b.Container.back());
-		return Q;
-	}
-	if (u.Container.size() == n+m) {
-		u.Container.push_back(0);
-		//std::cout << "u is uped!\n";
-	}
-	Q.Container.resize(m + 1);
-	//начальна€ установка
-	int j = m;
-	while (j >= 0) {
-		int q = ((u.Container[j + n] * u.Base + u.Container[j + n - 1]) / v.Container[n - 1]);
-		int r = ((u.Container[j + n] * u.Base + u.Container[j + n - 1]) % v.Container[n - 1]);
-		//вычислить q
-
-		//std::cout << "q: " << q << ' ';
-		do	{
-			if (q == u.Base || q * v.Container[n - 2] > u.Base* r + u.Container[j + n - 2]){
-				--q;
-				//std::cout << q << ' ';
-				r += v.Container[n - 1];
+	LongNumber Res, cv = LongNumber(0);
+	Res.Container.resize(a.Container.size());
+	for (int i = (int)a.Container.size() - 1; i >= 0; --i) {
+		cv.Container.insert(cv.Container.begin(), a.Container[i]);
+		if (!cv.Container.back())
+			cv.Container.pop_back();
+		int x = 0, l = 0, r = a.Base;
+		while (l <= r) {
+			int m = (l + r) / 2;
+			LongNumber cur = SmallMult(b, m);
+			if (cur <= cv) {
+				x = m;
+				l = m + 1;
 			}
-			else{
-				break;
+			else {
+				r = m - 1;
 			}
-		} while (r < u.Base);
-		//умножить и вычесть
-		//LongNumber t;
-		//t.Container = std::vector<long long>(n);
-		//std::copy(u.Container.begin() + j, u.Container.begin() + j + n, t.Container.begin());
-		LongNumber k = SmallMult(v, q*std::pow(a.Base, j));
-		//компенсировать сложение
-		if (u < k) {
-			u = Sub(u, k);
-			--q;
-			//std::cout << q << ' ';
-			u = Sub(u, v);
 		}
-		else {
-			u = Sub(u, k);
-			for (int i = u.Container.size(); i < n + m; ++i)
-				u.Container.push_back(0);
-		}
-		//std::copy(t.Container.begin(), t.Container.end(), u.Container.begin() + j);
-		
-		//std::cout << q << ' ' << std::endl <<"u: "<< u <<" k: "<< k<< std::endl;
-		Q.Container[j] = q;
-		--j;
+		Res.Container[i] = x;
+		cv = Sub(cv, SmallMult(b, x));
 	}
-	while (Q.Container.size() > 1 && Q.Container.back() == 0)
-		Q.Container.pop_back();
-	return Q;
-	/*
-	//начальна€ инициализаци€ u/v a/b
-	//int n = v.arr.Count;
-	int n = b.Container.size();//длина делител€
-	//int m = u.arr.Count - v.arr.Count; 
-	int m = a.Container.size() - b.Container.size();//разница длин делител€ и делимого
-	//int[] tempArray = new int[m + 1];
-	//tempArray[m] = 1;
-	//q = new BigInteger(tempArray, true);
-	LongNumber q(1); //результат вычислени€
-	//Ќормализаци€
-	//int d = (myBase / (v.arr[n - 1] + 1));
-	int d = (a.Base / (b.Container[n - 1] + 1));
-	u = u.Multiply(d);
-	v = v.Multiply(d);
-	if (u.arr.Count == n + m)//аккуратна€ проверка на d==1
-	{
-		u.arr.Add(0);
-	}
-	//Ќачальна€ установка j
-	int j = m;
-	//÷икл по j
-	while (j >= 0)
-	{
-		//¬ычислить временное q
-		long cur = (long)(u.arr[j + n]) * (long)(myBase)+u.arr[j + n - 1];
-		int tempq = (int)(cur / v.arr[n - 1]);//нормализаци€ помогает не выпрыгнуть за границу типа
-		int tempr = (int)(cur % v.arr[n - 1]);
-		do
-		{
-		if (tempq == myBase || (long)tempq * (long)v.arr[n - 2] > (long)myBase* (long)tempr + u.arr[j + n - 2])
-		{
-			tempq--;
-			tempr += v.arr[n - 1];
-		}
-		else
-		{
-			break;
-		}
-		} while (tempr < myBase); 
-		//”множить и вычесть 
-		BigInteger u2 = new BigInteger(u.arr.GetRange(j, n + 1), true); u2 = u2.Substract(v.Multiply(tempq)); bool flag = false; if (!u2.sign)//если отрицательные { flag = true; List bn = new List();
-		for (int i = 0; i <= n; i++) { bn.Add(0); } bn.Add(1); u2.ChangeSign(true); u2 = new BigInteger(bn, true).Substract(u2);
-	} 
-	//ѕроверка остатка q.arr[j] = tempq; if (flag) { // омпенсировать сложение q.arr[j]--; u2 = u2.Add(v); if(u2.arr.Count>n+j)
-	u2.arr.RemoveAt(n + j);
 
-	//мен€ем u, так как все вычислени€ происход€т с его разр€дами
-	for (int h = j; h < j + n; h++) {
-		if (h - j >= u2.arr.Count)
-		{
-			u.arr[h] = 0;
-		}
-		else
-		{
-			u.arr[h] = u2.arr[h - j];
-		}
-	}
-	j--;
-	}
-	q.arr = q.normalize(q.arr);
-	//ƒенормализаци€
-	int unusedR = 0;
-	r = new BigInteger(u.arr.GetRange(0, n), true).Divide(d, out unusedR);
-	return 0;
-	//*/
+	while (Res.Container.size() > 1 && Res.Container.back() == 0)
+		Res.Container.pop_back();
+	return Res;
 }
 LongNumber SmallDiv(const LongNumber& a, const int& b) {
 	LongNumber c;
@@ -297,4 +234,35 @@ LongNumber SmallMult(const LongNumber& a, const int& b) {
 	while (C.Container.size() > 1 && C.Container.back() == 0)
 		C.Container.pop_back();
 	return C;
+}
+
+LongNumber Exp(const LongNumber& a, const LongNumber& B) {
+	if (a == 1) {
+		return 1;
+	}
+	if (B == 0) {
+		return 1;
+	}
+	if (B == 1) {
+		return a;
+	}
+	if (B == 2) {
+		return Mult(a, a);
+	}
+	LongNumber R = SmallDiv(B, 2);
+	LongNumber L = Sub(B, R);
+	return Mult(Exp(a, L), Exp(a, R));
+}
+
+LongNumber SmallExp(const LongNumber& a, const LongNumber& b) {
+	LongNumber Res(1);
+	LongNumber B(b);
+	LongNumber A(a);
+	while (B > 0) {
+		if (B.Container.back() % 2)
+			Res = Mult(Res, A);
+		A = Mult(A, A);
+		B = SmallDiv(B, 2);
+	}
+	return Res;
 }
