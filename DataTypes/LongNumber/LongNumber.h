@@ -4,8 +4,10 @@
 #include<string>
 #include<cmath>
 #include<algorithm>
+#include<iomanip>
 
-const unsigned long long DEFAULT_BASE_FOR_LONG_NUMBER = 100;
+
+const unsigned long long DEFAULT_BASE_FOR_LONG_NUMBER = 1000000;
 
 class LongNumber {
 private:
@@ -23,6 +25,7 @@ public:
 	friend bool operator>=(const LongNumber& a, const LongNumber& b);
 	friend bool operator<=(const LongNumber& a, const LongNumber& b);
 	friend bool operator==(const LongNumber& a, const LongNumber& b);
+	friend bool operator!=(const LongNumber& a, const LongNumber& b);
 
 	friend LongNumber Sum(const LongNumber& a, const LongNumber& b);//a > 0 , b > 0
 	friend LongNumber Sub(const LongNumber& a, const LongNumber& b);// a - b > 0
@@ -31,9 +34,11 @@ public:
 	friend LongNumber SmallDiv(const LongNumber& a, const int& b);
 	friend LongNumber SmallMult(const LongNumber& a, const int& b);
 	friend std::ostream& operator<< (std::ostream& out, const LongNumber& a);
+	friend LongNumber Exp(const LongNumber& a, const LongNumber&);
+	friend LongNumber SmallExp(const LongNumber& a, const LongNumber& b);
 };
 LongNumber SmallMult(const LongNumber& a, const int& b);
-
+LongNumber Exp(const LongNumber& a, const LongNumber&);
 LongNumber SmallDiv(const LongNumber& a, const int& b);
 int Cmp(const LongNumber& a, const LongNumber& b);
 LongNumber Sum(const LongNumber& a, const LongNumber& b);
