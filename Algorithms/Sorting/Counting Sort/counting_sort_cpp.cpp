@@ -1,4 +1,3 @@
-#include<vector>
 template<class T>
 void countingSort(std::vector<T>&a) {
 	T maxEl = a[0];
@@ -15,10 +14,10 @@ void countingSort(std::vector<T>&a) {
 	for (int i = 1; i <= maxEl; ++i)
 		c[i] += c[i - 1];
 	std::vector<T> b(a.size());
-	for (int i = size - 1; i >= 0; i--) {
+	for (int i = a.size() - 1; i >= 0; i--) {
 		c[a[i]]--;
 		b[c[a[i]]] = a[i];
 	}
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < a.size(); i++)
 		a[i] = b[i];
 }
