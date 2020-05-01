@@ -2,8 +2,6 @@
 It's a my first try to do something like real timer clock
 
 ```c++
-#pragma once
-#include<chrono>
 class Timer {
 	std::chrono::steady_clock::time_point start_point = std::chrono::high_resolution_clock::now();
 	std::chrono::steady_clock::time_point end_point = start_point;
