@@ -1,5 +1,12 @@
 #include<string>
 #include<vector>
+inline bool space(char c) {
+	return std::isspace(c);
+}
+
+inline bool notspace(char c) {
+	return !std::isspace(c);
+}
 std::vector<std::string> split(const std::string& s) { 
   typedef std::string::const_iterator iter; 
   std::vector<std::string> ret; 
