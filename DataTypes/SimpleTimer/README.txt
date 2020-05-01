@@ -1,4 +1,4 @@
-## Simple Timer
+# Simple Timer
 It's a my first try to do something like real timer clock
 
 This class has a few methods:
