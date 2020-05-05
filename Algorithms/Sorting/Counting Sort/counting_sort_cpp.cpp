@@ -1,4 +1,4 @@
-template<class T>
+template<class T>//only indexed types : int , long int , unsigned int , etc
 void countingSort(std::vector<T>&a) {
 	T maxEl = a[0];
 	for (int i = 1; i < a.size(); ++i) {
