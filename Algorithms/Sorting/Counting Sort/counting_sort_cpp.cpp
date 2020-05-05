@@ -1,5 +1,8 @@
 template<class T>//only indexed types : int , long int , unsigned int , etc
 void countingSort(std::vector<T>&a) {
+	if (a.size() == 0) {
+		return;
+	}
 	T maxEl = a[0];
 	for (size_t i = 1; i < a.size(); ++i) {
 		if (maxEl < a[i]) {
