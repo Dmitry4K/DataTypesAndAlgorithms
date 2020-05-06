@@ -1,0 +1,93 @@
+#pragma once
+#include<iostream>
+#include<string>
+template<class T>
+class ComplexNumber {
+public:
+	using Type = T;
+private:
+	Type Re;
+	Type Im;
+public:
+	ComplexNumber(Type re, Type im) : Re(re), Im(im) {}
+	//ComplexNumber(const char* str);
+	ComplexNumber(ComplexNumber&& a) noexcept : Re(a.Re), Im(a.Im) {}
+	ComplexNumber(const ComplexNumber& a) : Re(a.Re), Im(a.Im) {}
+	Type getRe() const {
+		return Re;
+	}
+	Type getIm() const {
+		return Im;
+	}
+	ComplexNumber getСonjugate() const {
+		return ComplexNumber(getRe(), -getIm());
+	}
+	//const char* getAtomicString() const;
+	std::string getStdString() const {
+		std::string res = '(' + std::to_string(Re);
+		if (Im < 0) {
+			res += std::to_string(Im) + 'i';
+		}
+		else {
+			res += '+' + std::to_string(Im) + 'i';
+		}
+		res += ')';
+		return res;
+	}
+	void PrintToStdStream() const {
+		std::cout << getStdString();
+	}
+
+	void PrintToCustomStream(std::ostream& out) const {
+		out << getStdString();
+	}
+
+};
+
+template<class T>
+std::ostream& operator<< (std::ostream& out, const ComplexNumber<T>& point) {
+	out << point.getStdString();
+	return out;
+}
+
+
+template<class T>
+ComplexNumber<T> Sum(const ComplexNumber<T>& a, const ComplexNumber<T>& b) {
+	return ComplexNumber<T>(a.getRe() + b.getRe(), a.getIm() + b.getIm());
+}
+template<class T>
+const ComplexNumber<T> operator+(const ComplexNumber<T>& a, const ComplexNumber<T>& b) {
+	return Sum(a, b);
+}
+template<class T>
+ComplexNumber<T> Sub(const ComplexNumber<T>& a, const ComplexNumber<T>& b) {
+	return ComplexNumber<T>(a.getRe() - b.getRe(), a.getIm() - b.getIm());
+}
+template<class T>
+const ComplexNumber<T> operator-(const ComplexNumber<T>& a, const ComplexNumber<T>& b) {
+	return Sub(a, b);
+}
+template<class T>
+ComplexNumber<T> Mul(const ComplexNumber<T>& a, const ComplexNumber<T>& b) {
+	return ComplexNumber<T>(a.getRe() * b.getRe() - a.getIm() * b.getIm(), a.getRe() * b.getIm() + a.getIm() * b.getRe());
+}
+template<class T>
+const ComplexNumber<T> operator*(const ComplexNumber<T>& a, const ComplexNumber<T>& b) {
+	return Mul(a, b);
+}
+template<class T>
+ComplexNumber<T> Div(const ComplexNumber<T>& a, const ComplexNumber<T>& b) {
+	return Div(Mul(a, b.getСonjugate()), Mul(b, b.getСonjugate()).getRe());
+}
+template<class T>
+const ComplexNumber<T> operator/(const ComplexNumber<T>& a, const ComplexNumber<T>& b) {
+	return Div(a, b);
+}
+template<class T>
+ComplexNumber<T> Div(const ComplexNumber<T>& a,  const typename ComplexNumber<T>:: Type b) {
+	return ComplexNumber<T>(a.getRe() / b, a.getIm() / b);
+}
+template<class T>
+const ComplexNumber<T> operator/(const ComplexNumber<T>& a, const typename ComplexNumber<T>::Type  b) {
+	return Div(a, b);
+}
