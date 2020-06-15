@@ -1,4 +1,4 @@
-#include"timer.h"
+#include"SimpleTimer.h"
 void Timer::Start() {
 	start_point = std::chrono::high_resolution_clock::now();
 	is_stoped = false;
