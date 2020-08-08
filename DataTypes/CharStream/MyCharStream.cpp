@@ -59,8 +59,11 @@ void MyCharStreamClass::Get(char*& dest, size_t s) {
 	pos += s;
 }
 char MyCharStreamClass::Get() {
-	char res = src[pos];
-	++pos;
+	char res = '\0';
+	if (pos < len){
+		res = src[pos];
+		++pos;
+	}
 	return res;
 }
 void MyCharStreamClass::SkipSpaces() {
