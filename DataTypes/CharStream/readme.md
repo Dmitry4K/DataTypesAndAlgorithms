@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
 	return 0;
 }
 ```
-
+_Output_
 ```Output
 123 1
 ```
