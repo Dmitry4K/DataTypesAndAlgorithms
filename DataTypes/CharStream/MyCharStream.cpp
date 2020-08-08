@@ -1,6 +1,14 @@
 #include"MyCharStream.h"
 #include<string>
 
+inline bool space(char c) {
+	return std::isspace(c);
+}
+
+inline bool notspace(char c) {
+	return !std::isspace(c);
+}
+
 MyCharStreamClass::MyCharStreamClass(const char* ptr, size_t l) :
 	src(ptr),
 	len(l)
@@ -11,7 +19,7 @@ void MyCharStreamClass::GetWord(char*& dest) {
 	SkipSpaces();
 	size_t start = pos;
 	while (pos < len) {
-		if (src[pos] == ' ') {
+		if (space(src[pos])) {
 			++pos;
 			break;
 		}
@@ -57,7 +65,7 @@ char MyCharStreamClass::Get() {
 }
 void MyCharStreamClass::SkipSpaces() {
 	while (pos < len) {
-		if (src[pos] == ' ') {
+		if (space(src[pos])) {
 			++pos;
 		}
 		else {
