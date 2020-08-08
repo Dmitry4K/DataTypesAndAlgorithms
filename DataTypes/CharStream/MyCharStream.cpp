@@ -20,7 +20,6 @@ void MyCharStreamClass::GetWord(char*& dest) {
 	size_t start = pos;
 	while (pos < len) {
 		if (space(src[pos])) {
-			++pos;
 			break;
 		}
 		else {
