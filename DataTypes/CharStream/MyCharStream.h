@@ -2,9 +2,9 @@
 
 class MyCharStreamClass {
 private:
-	const char* src = nullptr;
-	size_t len = 0;
-	size_t pos = 0;
+	const char* src = nullptr;	//строка
+	size_t len = 0;			//длина строки
+	size_t pos = 0;			//текущая позиция
 public:
 	MyCharStreamClass(const char* ptr, size_t len);
 	void GetWord(char*& dest);
