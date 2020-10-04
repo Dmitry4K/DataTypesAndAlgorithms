@@ -1,5 +1,7 @@
 #include<vector>
 
+//Complexity O(nloglog(n))
+//Memory O(n)
 void getSimpleNumbers(std::vector<int>& a, int n) {
 	std::vector<bool> numbers(n + 1);
 	numbers[0] = numbers[1] = true;
