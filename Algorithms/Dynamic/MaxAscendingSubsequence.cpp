@@ -1,3 +1,5 @@
+//d[i] - max length of subsequence from i elment
+//p[i] - index in a to prev element of max subsequence in a
 void MaxAscendingSubsequence(std::vector<int>& a, int n, std::vector<int>& d, std::vector<int>& p){
   d.resize(n);
   p.resize(n);
@@ -11,5 +13,6 @@ void MaxAscendingSubsequence(std::vector<int>& a, int n, std::vector<int>& d, st
 					p[i] = j;
 					d[i] = 1 + d[j];
 				}
+			}
 	}
 }
