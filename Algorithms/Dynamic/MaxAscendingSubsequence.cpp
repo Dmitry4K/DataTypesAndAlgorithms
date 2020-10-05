@@ -11,6 +11,5 @@ void MaxAscendingSubsequence(std::vector<int>& a, int n, std::vector<int>& d, st
 					p[i] = j;
 					d[i] = 1 + d[j];
 				}
-			}
 	}
 }
