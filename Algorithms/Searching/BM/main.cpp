@@ -5,6 +5,10 @@
 11 44 11 11 11 44 11 11 32
 0 4
 */
+#include<iostream>
+#include<vector>
+#include<unordered_map>
+#include"BM.h"
 int main() {
 	std::vector<long long> string;
 	std::vector<long long> pattern;
