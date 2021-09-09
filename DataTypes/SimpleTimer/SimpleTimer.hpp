@@ -16,4 +16,4 @@ public:
 	long long Time(){
     return is_stoped ? std::chrono::duration_cast<std::chrono::milliseconds>(end_point - start_point).count() : std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start_point).count();
   }
-}
+};
