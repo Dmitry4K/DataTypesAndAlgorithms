@@ -65,7 +65,7 @@ public:
 		int current = 0;
 		ListNode<value_type>* ptr_current = begin();
 		check_index(index);
-		while (current < index) {
+		while ((size_t)current < index) {
 			ptr_current = ptr_current->_next;
 			++current;
 		}
