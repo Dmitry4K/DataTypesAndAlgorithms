@@ -5,7 +5,7 @@ Let's check how use this class!
 
 ### Usage
 
-In this examples I uses namespacing)
+In this examples I am using namespacing)
 ```c++
 using namespace chrono_timer;
 ```
