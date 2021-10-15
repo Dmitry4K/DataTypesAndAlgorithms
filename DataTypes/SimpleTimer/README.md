@@ -5,7 +5,7 @@ Let's check how use this class!
 
 ### Usage
 
-#### object declaration
+#### Object declaration
 
 You can simply do one of this examples
 
