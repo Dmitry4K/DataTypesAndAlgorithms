@@ -1,22 +1,32 @@
-## Simple Timer
-It's a my first try to do something like real timer clock
+## Simple Timer v2.0
+~~It's a my first try to do something like real timer clock~~ Okay, it's not a first attempt, so this pretty file have some updates ^_^.
 
-```c++
-class Timer {
-	std::chrono::steady_clock::time_point start_point = std::chrono::high_resolution_clock::now();
-	std::chrono::steady_clock::time_point end_point = start_point;
-	bool is_stoped = true;
-public:
-	void Start();
-	void Stop();
-	long long Time();
-};
+Let's check how use this class!
+
+### Usage
+
+#### object declaration
+
+You can simply do one of this examples
+
 ```
+timer<> my_timer //this timer returns time in nanoseconds
+timer<std::chrono::nanoseconds> my_timer2 //same timer that previous
+timer<std::chrono::milliseconds> mu_tiemr3 //this timer returns time in milliseconds
+```
+Allows to use another std::chrono time types, or you can do something like that
+
+```
+timer_mcs timer // returns microseconds
+timer_mls timer // returns milliseconds
+//and another)
+```
+
+#### Methods
 
 This class has a few methods:
 
-*Start()* - starting checking the time
+*start()* - remembers the time start point;
+*stop()* - remembers the time start point;
 
-*Stop()* - stops checking the time and saves the end time
-
-*Time()* - returns long long number in milliseconds. Returns current time if Start() was called, else returns End - Start time
+*time()* - returns long long number in milliseconds. Returns current time if Start() was called, else returns End - Start time
