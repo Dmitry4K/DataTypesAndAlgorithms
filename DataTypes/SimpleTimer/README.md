@@ -9,7 +9,7 @@ Let's check how use this class!
 
 You can simply do one of this examples
 
-```
+```c++
 timer<> my_timer //this timer returns time in nanoseconds
 timer<std::chrono::nanoseconds> my_timer2 //same timer that previous
 timer<std::chrono::milliseconds> mu_tiemr3 //this timer returns time in milliseconds
