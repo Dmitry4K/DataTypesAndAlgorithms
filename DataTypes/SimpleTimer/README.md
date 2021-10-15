@@ -71,5 +71,5 @@ std::cout << timer.measure([](){mySuperFunction(228, 322);}); //returns seconds
 ```
 
 ```
-std::cout << measure_time_in_nanoseconds([](){mySuperFunction(228, 322);}); //returns seconds
+std::cout << measure_time_in_nanoseconds([](){mySuperFunction(228, 322);}); //returns nanoseconds
 ```
