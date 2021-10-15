@@ -5,6 +5,11 @@ Let's check how use this class!
 
 ### Usage
 
+In this examples I uses namespacing)
+```c++
+using namespace chrono_timer;
+```
+
 #### Object declaration
 
 You can simply do one of this examples
