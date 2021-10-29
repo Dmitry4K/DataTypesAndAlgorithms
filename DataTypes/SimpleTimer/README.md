@@ -33,9 +33,9 @@ This class has a few methods:
 
 *start()* - remembers the time start point;
 
-*stop()* - remembers the time start point;
+*stop()* - remembers the time end point;
 
-*time()* - returns long long number in milliseconds. Returns current time if Start() was called, else returns End - Start time
+*time()* - returns long long number. Returns measured time end - current time point if ```stop()``` wasn't called, else returns End - Start time
 
 *measure(void f())* - returns time for function f, also f is executing while time measuring
 
