@@ -46,5 +46,5 @@ namespace chrono_timer {
     using timer_mls = timer < std::chrono::milliseconds >;
     using timer_mcs = timer < std::chrono::microseconds >;
     using timer_sec = timer < std::chrono::seconds >;
-	using timer_min = timer < std::chrono::minutes >;
+    using timer_min = timer < std::chrono::minutes >;
 };
