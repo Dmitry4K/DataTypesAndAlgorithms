@@ -1,5 +1,6 @@
 #include<string>
 #include<vector>
+
 inline bool space(char c) {
 	return std::isspace(c);
 }
