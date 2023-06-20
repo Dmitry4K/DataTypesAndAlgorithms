@@ -11,7 +11,7 @@ public class InsertSort {
         assertSolution(new ArrayList<>(List.of(6, 5, 4, 3, 2, 1)));
         assertSolution(new ArrayList<>(List.of(6, 4, 5, 7, 1, 8, 3, 9)));
     }
-    public static <T extends Comparable<T>> void assertSolution(List<T> list) {
+    public static <T extends Comparable<T>> void assertSolution(ArrayList<T> list) {
         var insert = new ArrayList<>(List.copyOf(list));
         var expected = new ArrayList<>(List.copyOf(list));
         new InsertSort().sort(insert);
@@ -20,7 +20,7 @@ public class InsertSort {
         assert insert.equals(expected);
     }
 
-    public <T extends Comparable<T>> void sort(List<T>  list) {
+    public <T extends Comparable<T>> void sort(ArrayList<T>  list) {
         for (int i = 1; i < list.size(); i++) {
             int j = i - 1;
             T cur = list.get(i);
